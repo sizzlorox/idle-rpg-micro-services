@@ -1,0 +1,25 @@
+{
+  "environment": "development",
+"jwtPublicCert": "./config/service.pub",  "hydra": {
+    "serviceName": "api-service",
+    "serviceIP": "",
+    "servicePort": 0,
+    "serviceType": "api",
+    "serviceDescription": "API Gateway",
+    "plugins": {
+      "logger": {
+        "logRequests": true,
+        "elasticsearch": {
+          "host": "localhost",
+          "port": 9200,
+          "index": "hydra"
+        }
+      }
+    },
+    "redis": {
+      "url": "127.0.0.1",
+      "port": 6379,
+      "db": 15
+    }
+  }
+}
