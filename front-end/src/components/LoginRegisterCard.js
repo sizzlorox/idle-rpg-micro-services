@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { Card, FormGroup, InputGroup, Button } from "@blueprintjs/core";
+import {
+  Classes,
+  Card,
+  FormGroup,
+  InputGroup,
+  Button,
+  Tab,
+  Tabs
+} from "@blueprintjs/core";
+import Recaptcha from "react-recaptcha";
 import styled from "@emotion/styled";
-
-/*
-  TODO:
-    1. Find out how to change form label color in blueprint
-    2. Find out formgroup how to have different labels for different inputs
-    3. Add some method of changing to different modes, login -> register
-    4. Remove login/register from navbar
-    5. Find a way of making the particles background interactable, currently with a div over it breaks it.
-*/
 
 const CardContainer = styled.div`
   position: relative;
@@ -20,15 +20,9 @@ const CardContainer = styled.div`
 `;
 
 const StyledCard = styled(Card)`
-  background: transparent;
+  background-color: rgba(48, 64, 77, 0.5) !important;
   backdrop-filter: blur(2px);
   border: 1px solid white;
-  > h5 {
-    color: white;
-  }
-  > label {
-    color: white;
-  }
 `;
 
 export const LoginRegisterCard = ({ children }) => {
@@ -36,26 +30,73 @@ export const LoginRegisterCard = ({ children }) => {
 
   return (
     <CardContainer>
-      <StyledCard>
-        {mode === "login" ? (
-          <React.Fragment>
-            <h5>Login</h5>
-            <FormGroup
-              label="Email"
-              labelFor="email-input"
-              labelInfo="(required)"
-            >
-              <InputGroup id="email-input" placeholder="Placeholder text" />
-              <InputGroup id="password-input" placeholder="Placeholder text" />
-            </FormGroup>
-            <Button>Login</Button>
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            <h5>Register</h5>
-            <Button>Register</Button>
-          </React.Fragment>
-        )}
+      <StyledCard className={Classes.DARK}>
+        <Tabs
+          id="loginRegisterTabs"
+          onChange={newTabId => setMode(newTabId)}
+          selectedTabId={mode}
+          renderActiveTabPanelOnly
+        >
+          <Tab
+            id="login"
+            title="Login"
+            panel={
+              <React.Fragment>
+                <FormGroup
+                  label="Email"
+                  labelFor="email-input"
+                  labelInfo="(required)"
+                >
+                  <InputGroup id="email-input" />
+                </FormGroup>
+                <FormGroup
+                  label="Password"
+                  labelFor="password-input"
+                  labelInfo="(required)"
+                >
+                  <InputGroup id="password-input" />
+                </FormGroup>
+                <Button>Login</Button>
+              </React.Fragment>
+            }
+          />
+          <Tab
+            id="register"
+            title="Register"
+            panel={
+              <React.Fragment>
+                <FormGroup
+                  label="Email"
+                  labelFor="email-input"
+                  labelInfo="(required)"
+                >
+                  <InputGroup id="email-input" />
+                </FormGroup>
+                <FormGroup
+                  label="Password"
+                  labelFor="password-input"
+                  labelInfo="(required)"
+                >
+                  <InputGroup id="password-input" />
+                </FormGroup>
+                <FormGroup
+                  label="Confirm Password"
+                  labelFor="confirm-password-input"
+                  labelInfo="(required)"
+                >
+                  <InputGroup id="confirm-password-input" />
+                </FormGroup>
+                <Recaptcha
+                  sitekey={GOOGLE_SITE_KEY}
+                  theme="dark"
+                  render="onload"
+                  verifyCallback={() => console.log("verified")}
+                />
+                <Button>Register</Button>
+              </React.Fragment>
+            }
+          />
+        </Tabs>
       </StyledCard>
     </CardContainer>
   );

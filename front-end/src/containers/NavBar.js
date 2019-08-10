@@ -9,10 +9,6 @@ const NavBar = () => (
       </Navbar.Heading>
       <Navbar.Divider />
     </Navbar.Group>
-    <Navbar.Group align={Alignment.RIGHT}>
-      <Button className={Classes.MINIMAL} text="Login" />
-      <Button className={Classes.MINIMAL} text="Register" />
-    </Navbar.Group>
   </Navbar>
 );
 export default NavBar;

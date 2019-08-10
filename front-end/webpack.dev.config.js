@@ -1,5 +1,6 @@
 'use strict'
 
+require('dotenv').config();
 const { DefinePlugin } = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
@@ -28,6 +29,7 @@ module.exports = {
 
     new DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
+      'GOOGLE_SITE_KEY': JSON.stringify(process.env.GOOGLE_SITE_KEY),
     }),
   ],
 
