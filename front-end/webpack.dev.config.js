@@ -28,7 +28,7 @@ module.exports = {
     }),
 
     new DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development'),
+      'NODE_ENV': JSON.stringify('development'),
       'GOOGLE_SITE_KEY': JSON.stringify(process.env.GOOGLE_SITE_KEY),
     }),
   ],

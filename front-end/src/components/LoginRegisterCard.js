@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch } from 'react-redux';
 import {
   Classes,
   Card,
@@ -10,6 +11,9 @@ import {
 } from "@blueprintjs/core";
 import Recaptcha from "react-recaptcha";
 import styled from "@emotion/styled";
+
+// Redux
+import { loginAccount, registerAccount } from '../redux/actions/accountAction';
 
 const CardContainer = styled.div`
   position: relative;
@@ -26,7 +30,11 @@ const StyledCard = styled(Card)`
 `;
 
 export const LoginRegisterCard = ({ children }) => {
+  const dispatch = useDispatch();
   const [mode, setMode] = useState("login");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   return (
     <CardContainer>
@@ -47,16 +55,27 @@ export const LoginRegisterCard = ({ children }) => {
                   labelFor="email-input"
                   labelInfo="(required)"
                 >
-                  <InputGroup id="email-input" />
+                  <InputGroup
+                    id="email-input"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                  />
                 </FormGroup>
                 <FormGroup
                   label="Password"
                   labelFor="password-input"
                   labelInfo="(required)"
                 >
-                  <InputGroup id="password-input" />
+                  <InputGroup
+                    id="password-input"
+                    type="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                  />
                 </FormGroup>
-                <Button>Login</Button>
+                <Button onClick={() => dispatch(loginAccount({ email, password }))}>
+                  Login
+                </Button>
               </React.Fragment>
             }
           />
@@ -70,21 +89,35 @@ export const LoginRegisterCard = ({ children }) => {
                   labelFor="email-input"
                   labelInfo="(required)"
                 >
-                  <InputGroup id="email-input" />
+                  <InputGroup
+                    id="email-input"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                  />
                 </FormGroup>
                 <FormGroup
                   label="Password"
                   labelFor="password-input"
                   labelInfo="(required)"
                 >
-                  <InputGroup id="password-input" />
+                  <InputGroup
+                    id="password-input"
+                    type="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                  />
                 </FormGroup>
                 <FormGroup
                   label="Confirm Password"
                   labelFor="confirm-password-input"
                   labelInfo="(required)"
                 >
-                  <InputGroup id="confirm-password-input" />
+                  <InputGroup
+                    id="confirm-password-input"
+                    type="password"
+                    value={confirmPassword}
+                    onChange={e => setConfirmPassword(e.target.value)}
+                  />
                 </FormGroup>
                 <Recaptcha
                   sitekey={GOOGLE_SITE_KEY}
@@ -92,7 +125,9 @@ export const LoginRegisterCard = ({ children }) => {
                   render="onload"
                   verifyCallback={() => console.log("verified")}
                 />
-                <Button>Register</Button>
+                <Button onClick={() => dispatch(registerAccount({ email, password, confirmPassword }))}>
+                  Register
+                </Button>
               </React.Fragment>
             }
           />
