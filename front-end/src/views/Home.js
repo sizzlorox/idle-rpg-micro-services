@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from '@emotion/styled';
 
 // Components
 import Background from '../components/Background';

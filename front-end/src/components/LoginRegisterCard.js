@@ -16,11 +16,10 @@ import styled from "@emotion/styled";
 import { loginAccount, registerAccount } from '../redux/actions/accountAction';
 
 const CardContainer = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 const StyledCard = styled(Card)`
