@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
+import styled from '@emotion/styled';
+import { Spinner } from '@blueprintjs/core';
 
 // Components
-import Background from '../components/Background';
-import LoginRegisterCard from '../components/LoginRegisterCard';
-
-// Containers
 import NavBar from '../containers/NavBar';
+import Background from '../components/Background';
+const LoginRegisterCard = lazy(() => import('../components/LoginRegisterCard'));
+
+const StyledSpinnerContainer = styled.div`
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+`;
 
 const Home = () => {
 
@@ -13,7 +20,13 @@ const Home = () => {
     <React.Fragment>
       <NavBar />
       <Background>
-        <LoginRegisterCard />
+        <Suspense fallback={(
+          <StyledSpinnerContainer>
+            <Spinner />
+          </StyledSpinnerContainer>
+        )}>
+          <LoginRegisterCard />
+        </Suspense>
       </Background>
     </React.Fragment>
   );

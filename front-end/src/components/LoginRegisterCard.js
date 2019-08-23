@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { useDispatch } from 'react-redux';
 import {
   Classes,
