@@ -18,11 +18,17 @@ express.response.sendOk = function(result) {
   serverResponse.sendOk(this, {result});
 };
 
+const { AccountController: Controller } = require('../controllers/AccountController');
+const { AccountService: Service } = require('../services/AccountService');
+const { AccountRepository: Repository } = require('../repositories/AccountRepository');
+
+const repository = new Repository();
+const service = new Service(repository);
+const controller = new Controller(service);
+
+const domain = 'account';
 let api = express.Router();
 
-api.get('/', hydraExpress.validateJwtToken(),
-(req, res) => {
-  res.sendOk({greeting: 'Welcome to Hydra Express!'});
-});
+api.post(`/v1/${domain}/register`, (req, res, next) => controller.register(req, res, next));
 
 module.exports = api;

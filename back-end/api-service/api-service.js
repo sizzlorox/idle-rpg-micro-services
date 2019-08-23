@@ -25,7 +25,7 @@ config.init('./config/config.json')
   .then(status => {
     return hydraExpress.init(config.getObject(), version, () => {
       hydraExpress.registerRoutes({
-        '/v1/api': require('./routes/api-v1-routes')
+        '/v1/account': require('./domains/v1/account/routes/account-routes')
       });
     });
   })
