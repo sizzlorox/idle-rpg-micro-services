@@ -1,13 +1,14 @@
 /**
-* @name User
-* @summary User Hydra service entry point
-* @description User stuff
+* @name Account
+* @summary Account Hydra service entry point
+* @description Account stuff
 */
 'use strict';
 
 const version = require('./package.json').version;
 const hydra = require('hydra');
-const jwtAuth = require('fwsp-jwt-auth');let config = require('fwsp-config');
+const jwtAuth = require('fwsp-jwt-auth');
+let config = require('fwsp-config');
 
 const HydraLogger = require('fwsp-logger').HydraLogger;
 hydra.use(new HydraLogger());

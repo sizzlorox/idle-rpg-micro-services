@@ -1,11 +1,12 @@
 {
   "environment": "development",
-"jwtPublicCert": "./config/service.pub",  "hydra": {
-    "serviceName": "user-service",
+  "jwtPublicCert": "./config/service.pub",
+  "hydra": {
+    "serviceName": "account-service",
     "serviceIP": "",
     "servicePort": 0,
-    "serviceType": "user",
-    "serviceDescription": "User stuff",
+    "serviceType": "account",
+    "serviceDescription": "Account stuff",
     "plugins": {
       "logger": {
         "logRequests": true,

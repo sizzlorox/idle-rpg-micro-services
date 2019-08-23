@@ -1,11 +1,11 @@
 {
-  "name": "user-service",
+  "name": "account-service",
   "version": "0.0.1",
   "author": "Sizzlorox <sizzlorox@protonmail.com>",
   "private": true,
   "scripts": {
-    "start": "node user-service.js",
-    "debug": "node-debug user-service.js --debug-brk",
+    "start": "node account-service.js",
+    "debug": "node-debug account-service.js --debug-brk",
     "test": "mocha specs --reporter spec",
     "docker": "node scripts/docker.js"
   },
