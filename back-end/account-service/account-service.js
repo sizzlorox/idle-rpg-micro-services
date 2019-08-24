@@ -22,12 +22,10 @@ config.init('./config/config.json')
     config.version = version;
     return jwtAuth.loadCerts(null, config.jwtPublicCert);
   })
-  .then(status => {
-    return hydraExpress.init(config.getObject(), version, () => {
-      hydraExpress.registerRoutes({
-        '/v1/account': require('./src/routes/account-v1-routes')
-      });
+  .then(status => hydraExpress.init(config.getObject(), version, () => {
+    hydraExpress.registerRoutes({
+      '/v1/account': require('./src/routes/account-v1-routes')
     });
-  })
+  }))
   .then(serviceInfo => console.log('serviceInfo', serviceInfo))
   .catch(err => console.log('err', err));

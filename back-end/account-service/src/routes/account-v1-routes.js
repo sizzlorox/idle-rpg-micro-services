@@ -26,19 +26,23 @@ api.post('/register', (req, res, next) => {
   const { email, password, confirmPassword } = req.body;
   if (!email || !password || !confirmPassword) {
     const { defaultType } = errors;
-    return res.send(defaultType.badRequest.statusCode, defaultType.badRequest);
+    return res.status(defaultType.badRequest.statusCode)
+      .send(defaultType.badRequest);
   }
-  if (!/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(email)) {
-    const { account } = error;
-    return res.send(account.invalidEmail.statusCode, account.invalidEmail);
+  if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)) {
+    const { account } = errors;
+    return res.status(account.invalidEmail.statusCode)
+      .send(account.invalidEmail);
   }
   if (password !== confirmPassword) {
-    const { account } = error;
-    return res.send(account.passwordNotMatch.statusCode, account.passwordNotMatch);
+    const { account } = errors;
+    return res.status(account.passwordNotMatch.statusCode)
+      .send(account.passwordNotMatch);
   }
 
   const { account } = responses;
-  return res.send(account.register.statusCode, account.register);
+  return res.status(account.register.statusCode)
+    .send(account.register);
 });
 
 module.exports = api;
