@@ -1,0 +1,36 @@
+version: '3.7'
+services:
+  redis:
+    image: redis:alpine
+    ports:
+      - 6379:6379
+    networks:
+      - hydra-net
+
+  router-service:
+    image: flywheelsports/hydra-router
+    depends_on:
+      - redis
+    ports:
+      - 7000:7000
+    volumes:
+      - ./router-config.json:/usr/src/app/config/config.json
+    networks:
+      - hydra-net
+
+  account-service:
+    # image: sizzlorox/account-service:1.0.0
+    build: ./account-service
+    depends_on:
+      - redis
+      - router-service
+    ports:
+      - 5001-5020:5000
+    volumes:
+      - ./account-service/config:/usr/src/app/config
+    networks:
+      - hydra-net
+
+networks:
+  hydra-net:
+    external: true

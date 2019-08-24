@@ -72,7 +72,7 @@ export const LoginRegisterCard = ({ children }) => {
                     onChange={e => setPassword(e.target.value)}
                   />
                 </FormGroup>
-                <Button onClick={() => dispatch(loginAccount({ email, password }))}>
+                <Button onClick={() => dispatch(loginAccount({ email, password, confirmPassword }))}>
                   Login
                 </Button>
               </React.Fragment>

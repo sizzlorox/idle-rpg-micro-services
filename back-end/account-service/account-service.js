@@ -1,39 +1,33 @@
 /**
 * @name Account
-* @summary Account Hydra service entry point
-* @description Account stuff
+* @summary Account Hydra Express service entry point
+* @description Manages Accounts
 */
 'use strict';
 
 const version = require('./package.json').version;
-const hydra = require('hydra');
+const hydraExpress = require('hydra-express');
+
 const jwtAuth = require('fwsp-jwt-auth');
+const HydraExpressLogger = require('fwsp-logger').HydraExpressLogger;
+hydraExpress.use(new HydraExpressLogger());
+
 let config = require('fwsp-config');
 
-const HydraLogger = require('fwsp-logger').HydraLogger;
-hydra.use(new HydraLogger());
-
 /**
-* Load configuration file
+* Load configuration file and initialize hydraExpress app
 */
 config.init('./config/config.json')
   .then(() => {
     config.version = version;
-    config.hydra.serviceVersion = version;
     return jwtAuth.loadCerts(null, config.jwtPublicCert);
   })
-  .then((status) => {
-    /**
-    * Initialize hydra
-    */
-    return hydra.init(config);
+  .then(status => {
+    return hydraExpress.init(config.getObject(), version, () => {
+      hydraExpress.registerRoutes({
+        '/v1/account': require('./src/routes/account-v1-routes')
+      });
+    });
   })
-  .then(() => hydra.registerService())
-  .then(serviceInfo => {
-    let logEntry = `Starting ${config.hydra.serviceName} (v.${config.version})`;
-    hydra.sendToHealthLog('info', logEntry);
-    console.log(logEntry);
-  })
-  .catch(err => {
-    console.log('Error initializing hydra', err);
-  });
+  .then(serviceInfo => console.log('serviceInfo', serviceInfo))
+  .catch(err => console.log('err', err));

@@ -1,6 +1,6 @@
-# user-service
+# account-service
 
-User stuff
+Manages Accounts
 
 ## Pre-installation
 
@@ -10,7 +10,7 @@ The project includes an .nvmrc which specifies NodeJS 6.2.1
 ## Installation
 
 ```javascript
-$ cd user-service
+$ cd account-service
 $ nvm use
 ```
 

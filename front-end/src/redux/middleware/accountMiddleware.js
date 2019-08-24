@@ -11,7 +11,7 @@ import { apiRequest } from '../actions/apiAction';
 
 const URL = NODE_ENV.includes('production')
   ? '/v1/account'
-  : 'http://localhost:5000/v1/account';
+  : 'http://localhost:7000/v1/account';
 
 export const loginAccountFlow = ({ dispatch }) => next => action => {
   next(action);
@@ -24,7 +24,7 @@ export const loginAccountFlow = ({ dispatch }) => next => action => {
 export const registerAccountFlow = ({ dispatch }) => next => action => {
   next(action);
   if (action.type === REGISTER_ACCOUNT) {
-    dispatch(apiRequest('POST', `${URL}/login`, action.payload, REGISTER_SUCCESS, REGISTER_ERROR));
+    dispatch(apiRequest('POST', `${URL}/register`, action.payload, REGISTER_SUCCESS, REGISTER_ERROR));
     dispatch(showSpinner());
   }
 };
