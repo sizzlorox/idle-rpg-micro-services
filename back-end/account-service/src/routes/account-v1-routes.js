@@ -64,7 +64,8 @@ api.post('/register', async (req, res, next) => {
   } catch(err) {
     console.log(err);
     await transaction.rollback();
-    return res.status(500).send({ status: 'ERROR', message: 'Shit... Something went wrong...' });
+    const { account } = errors;
+    return res.status(account.createFailed.statusCode).send(account.createFailed);
   }
 });
 
