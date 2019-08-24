@@ -48,7 +48,13 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
-    }, { logging: console.log });
+    }, {
+      indexes: [{
+        fields: ['email'],
+        unique: true,
+      }],
+      logging: console.log
+    });
   },
 
   down: (queryInterface, Sequelize) => {

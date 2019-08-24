@@ -11,6 +11,8 @@ const jwtAuth = require('fwsp-jwt-auth');
 const ServerResponse = require('fwsp-server-response');
 const responses = require('../utils/responses');
 const errors = require('../utils/errors');
+const Database = require('../sequelizer/Database').db;
+const bcrypt = require('bcrypt');
 
 let serverResponse = new ServerResponse();
 express.response.sendError = function(err) {
@@ -22,7 +24,7 @@ express.response.sendOk = function(result) {
 
 let api = express.Router();
 
-api.post('/register', (req, res, next) => {
+api.post('/register', async (req, res, next) => {
   const { email, password, confirmPassword } = req.body;
   if (!email || !password || !confirmPassword) {
     const { defaultType } = errors;
@@ -40,9 +42,30 @@ api.post('/register', (req, res, next) => {
       .send(account.passwordNotMatch);
   }
 
+  const userWithEmail = await Database.accounts.findOne({ where: { email }});
+  if (userWithEmail) {
+    const { account } = errors;
+    return res.status(account.alreadyExists.statusCode)
+      .send(account.alreadyExists);
+  }
+
   const { account } = responses;
-  return res.status(account.register.statusCode)
-    .send(account.register);
+  const transaction = await Database.sequelize.transaction();
+  try {
+    await Database.accounts.create({
+      email,
+      password: await bcrypt.hash(password, 10),
+      isActive: true,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, { transaction });
+    await transaction.commit();
+    return res.status(account.register.statusCode).send(account.register);
+  } catch(err) {
+    console.log(err);
+    await transaction.rollback();
+    return res.status(500).send({ status: 'ERROR', message: 'Shit... Something went wrong...' });
+  }
 });
 
 module.exports = api;

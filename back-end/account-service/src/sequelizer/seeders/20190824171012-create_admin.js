@@ -7,7 +7,7 @@ module.exports = {
     return queryInterface.bulkInsert('accounts', [{
       email: 'test@admin.com',
       password: await bcrypt.hash('12345', 10),
-      isActive: false,
+      isActive: true,
       isAdmin: true,
       createdAt: new Date(),
       updatedAt: new Date(),

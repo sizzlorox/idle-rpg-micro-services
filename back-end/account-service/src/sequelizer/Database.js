@@ -2,14 +2,13 @@ const Sequlizer = require('./models/index');
 
 class Database {
 
-  init() {
-    this.db = Sequlizer.sequelize;
+  constructor() {
+    this.db = Sequlizer;
     this.testConnection();
-    console.log('[DB] Initialized');
   }
 
   testConnection() {
-    this.db
+    this.db.sequelize
       .authenticate()
       .then(() => {
         console.log('[DB] Connection has been established successfully.');
