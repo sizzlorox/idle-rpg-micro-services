@@ -3,13 +3,13 @@ module.exports = {
     username: 'root',
     password: null,
     dialect: 'sqlite',
-    storage: 'game-service.db'
+    storage: 'account-service.db'
   },
   test: {
     username: 'root',
     password: null,
     dialect: 'sqlite',
-    storage: 'game-service.db'
+    storage: 'account-service.db'
   },
   production: {
     username: process.env.DB_USERNAME,

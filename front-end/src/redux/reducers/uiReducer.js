@@ -21,7 +21,9 @@ export const uiReducer = (state = initialState, action) => produce(state, draft 
     case SHOW_TOASTER:
       AppToaster.show({
         timeout: 2500,
-        intent: action.payload.status !== 'OK' ? 'danger' : 'success',
+        intent: action.payload.status !== 'OK'
+          ? 'danger'
+          : 'success',
         message: action.payload.message,
       });
       break;
