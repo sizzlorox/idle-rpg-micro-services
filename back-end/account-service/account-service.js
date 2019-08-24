@@ -20,7 +20,8 @@ let config = require('fwsp-config');
 config.init('./config/config.json')
   .then(() => {
     config.version = version;
-    return jwtAuth.loadCerts(null, config.jwtPublicCert);
+    // Used fwsp-jwt-auths keygen.sh to make the private cert and public cert
+    return jwtAuth.loadCerts(config.jwtPrivateCert, config.jwtPublicCert);
   })
   .then(status => hydraExpress.init(config.getObject(), version, () => {
     hydraExpress.registerRoutes({

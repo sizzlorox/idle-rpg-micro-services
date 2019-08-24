@@ -13,6 +13,7 @@ const responses = require('../utils/responses');
 const errors = require('../utils/errors');
 const Database = require('../sequelizer/Database').db;
 const bcrypt = require('bcrypt');
+const uuid = require('uuid/v4');
 
 let serverResponse = new ServerResponse();
 express.response.sendError = function(err) {
@@ -42,8 +43,8 @@ api.post('/register', async (req, res, next) => {
       .send(account.passwordNotMatch);
   }
 
-  const userWithEmail = await Database.accounts.findOne({ where: { email }});
-  if (userWithEmail) {
+  const accountWithEmail = await Database.accounts.findOne({ where: { email }});
+  if (accountWithEmail) {
     const { account } = errors;
     return res.status(account.alreadyExists.statusCode)
       .send(account.alreadyExists);
@@ -60,13 +61,56 @@ api.post('/register', async (req, res, next) => {
       updatedAt: new Date(),
     }, { transaction });
     await transaction.commit();
-    return res.status(account.register.statusCode).send(account.register);
+    return res.status(account.register.statusCode)
+      .send(account.register);
   } catch(err) {
     console.log(err);
     await transaction.rollback();
     const { account } = errors;
-    return res.status(account.createFailed.statusCode).send(account.createFailed);
+    return res.status(account.createFailed.statusCode)
+      .send(account.createFailed);
   }
 });
 
+api.post('/login', async (req, res, next) => {
+  console.log(req.cookies);
+  const { email, password } = req.body;
+  if (!email || !password) {
+    const { defaultType } = errors;
+    return res.status(defaultType.badRequest.statusCode)
+      .send(defaultType.badRequest);
+  }
+  if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)) {
+    const { account } = errors;
+    return res.status(account.invalidEmail.statusCode)
+      .send(account.invalidEmail);
+  }
+
+  const userAccount = await Database.accounts.findOne({ where: { email }});
+  if (!userAccount) {
+    const { account } = errors;
+    return res.status(account.notExist.statusCode)
+      .send(account.notExist);
+  }
+  const passwordMatched = await bcrypt.compare(password, userAccount.password);
+  if (!passwordMatched) {
+    const { account } = errors;
+    return res.status(account.notExist.statusCode)
+      .send(account.notExist);
+  }
+
+  const fingerPrint = await uuid();
+  const token = await jwtAuth.createToken({
+    userId: userAccount.id,
+    isAdmin: userAccount.isAdmin,
+    fingerPrint,
+  });
+
+  return res.status(200)
+    .cookie('idle-session', fingerPrint, {
+      httpOnly: true,
+      secure: true,
+    })
+    .send({ status: 'OK', message: 'Logged In', account: userAccount, token });
+});
 module.exports = api;

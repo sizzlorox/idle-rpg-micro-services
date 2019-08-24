@@ -22,7 +22,8 @@
     "fwsp-logger": "0.3.4",
     "fwsp-server-response": "2.2.6",
     "hydra-express": "1.7.1",
-    "sequelize": "^5.16.0"
+    "sequelize": "^5.16.0",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "chai": "3.5.0",

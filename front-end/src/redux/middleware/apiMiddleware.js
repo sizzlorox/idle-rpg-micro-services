@@ -9,6 +9,7 @@ export const apiMiddleware = ({ dispatch }) => next => action => {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
+      credentials: 'same-origin',
       method,
     };
     if (method === 'POST') {
@@ -18,10 +19,10 @@ export const apiMiddleware = ({ dispatch }) => next => action => {
     fetch(url, payload)
       .then(response => response.json())
       .then((data) => {
+        if (data.message) {
+          dispatch(showToaster(data));
+        }
         if (data.status !== 'OK') {
-          if (data.message) {
-            dispatch(showToaster(data));
-          }
           return dispatch({ type: onError, payload: data });
         }
         dispatch({ type: onSuccess, payload: data });
