@@ -6,4 +6,4 @@ node_modules
 config/config.json
 */public
 *.pub
-*.db
+account-service.db
