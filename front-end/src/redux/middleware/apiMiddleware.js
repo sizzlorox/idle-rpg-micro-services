@@ -1,4 +1,5 @@
 import { API_REQUEST } from '../actions/apiAction';
+import { showToaster } from '../actions/uiAction';
 
 export const apiMiddleware = ({ dispatch }) => next => action => {
   if (action.type === API_REQUEST) {
@@ -18,6 +19,9 @@ export const apiMiddleware = ({ dispatch }) => next => action => {
       .then(response => response.json())
       .then((data) => {
         if (data.status !== 'OK') {
+          if (data.message) {
+            dispatch(showToaster(data));
+          }
           return dispatch({ type: onError, payload: data });
         }
         dispatch({ type: onSuccess, payload: data });

@@ -2,8 +2,10 @@ import React, { Suspense, lazy } from 'react';
 import styled from '@emotion/styled';
 import { Spinner } from '@blueprintjs/core';
 
-// Components
+// Containers
 import NavBar from '../containers/NavBar';
+
+// Components
 import Background from '../components/Background';
 const LoginRegisterCard = lazy(() => import('../components/LoginRegisterCard'));
 
