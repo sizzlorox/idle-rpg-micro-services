@@ -7,7 +7,6 @@
     "start": "node game-service.js",
     "debug": "node-debug game-service.js --debug-brk",
     "test": "mocha specs --reporter spec",
-    "docker": "node scripts/docker.js",
     "seed": "npx sequelize db:seed:all",
     "seed:undo": "npx sequlize db:seed:undo",
     "migration": "npx sequlize db:migrate",

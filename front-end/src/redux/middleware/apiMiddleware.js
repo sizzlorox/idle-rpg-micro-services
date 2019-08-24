@@ -11,7 +11,7 @@ export const apiMiddleware = ({ dispatch }) => next => action => {
       method,
     };
     if (method === 'POST') {
-      payload.body = action.payload;
+      payload.body = JSON.stringify(action.payload);
     }
 
     fetch(url, payload)

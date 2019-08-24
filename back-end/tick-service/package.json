@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node tick-service.js",
     "debug": "node-debug tick-service.js --debug-brk",
-    "test": "mocha specs --reporter spec",
-    "docker": "node scripts/docker.js"
+    "test": "mocha specs --reporter spec"
   },
   "engines": {
     "node": ">=6.2.1"
