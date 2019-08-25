@@ -5,6 +5,7 @@
 */
 'use strict';
 
+require('dotenv').config();
 const version = require('./package.json').version;
 const hydraExpress = require('hydra-express');
 

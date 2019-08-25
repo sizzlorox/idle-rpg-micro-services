@@ -3,13 +3,15 @@ import { showToaster } from '../actions/uiAction';
 
 export const apiMiddleware = ({ dispatch }) => next => action => {
   if (action.type === API_REQUEST) {
-    const { method, url, onSuccess, onError } = action.meta;
+    const { method, url, withAuth, onSuccess, onError } = action.meta;
     let payload = {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
-      credentials: 'same-origin',
+      credentials: withAuth
+        ? 'include'
+        : 'omit',
       method,
     };
     if (method === 'POST') {

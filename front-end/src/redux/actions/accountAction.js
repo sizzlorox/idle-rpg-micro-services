@@ -8,9 +8,11 @@ export const REGISTER_ERROR = '[ACCOUNT] Register Error';
 export const loginAccount = (data) => ({
   type: LOGIN_ACCOUNT,
   payload: data,
+  withAuth: true,
 });
 
 export const registerAccount = (data) => ({
   type: REGISTER_ACCOUNT,
   payload: data,
+  withAuth: false,
 });

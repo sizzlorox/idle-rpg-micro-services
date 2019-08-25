@@ -73,7 +73,6 @@ api.post('/register', async (req, res, next) => {
 });
 
 api.post('/login', async (req, res, next) => {
-  console.log(req.cookies);
   const { email, password } = req.body;
   if (!email || !password) {
     const { defaultType } = errors;
@@ -106,10 +105,22 @@ api.post('/login', async (req, res, next) => {
     fingerPrint,
   });
 
+  delete userAccount.password;
   return res.status(200)
     .cookie('idle-session', fingerPrint, {
       httpOnly: true,
       secure: true,
+      path: '/',
+      domain: process.env.NODE_ENV.includes('production')
+        ? process.env.HOST
+        : 'localhost',
+    })
+    .cookie('userId', userAccount.id, {
+      secure: true,
+      path: '/',
+      domain: process.env.NODE_ENV.includes('production')
+        ? process.env.HOST
+        : 'localhost',
     })
     .send({ status: 'OK', message: 'Logged In', account: userAccount, token });
 });

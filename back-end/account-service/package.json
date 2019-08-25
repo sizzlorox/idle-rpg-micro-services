@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "bcrypt": "^3.0.6",
+    "dotenv": "^8.1.0",
     "fwsp-config": "1.1.5",
     "fwsp-jwt-auth": "0.1.0",
     "fwsp-logger": "0.3.4",

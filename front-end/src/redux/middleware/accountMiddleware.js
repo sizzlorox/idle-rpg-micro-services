@@ -16,7 +16,7 @@ const URL = NODE_ENV.includes('production')
 export const loginAccountFlow = ({ dispatch }) => next => action => {
   next(action);
   if (action.type === LOGIN_ACCOUNT) {
-    dispatch(apiRequest('POST', `${URL}/login`, action.payload, LOGIN_SUCCESS, LOGIN_ERROR));
+    dispatch(apiRequest('POST', `${URL}/login`, action.withAuth, action.payload, LOGIN_SUCCESS, LOGIN_ERROR));
     dispatch(showSpinner());
   }
 };
@@ -24,7 +24,7 @@ export const loginAccountFlow = ({ dispatch }) => next => action => {
 export const registerAccountFlow = ({ dispatch }) => next => action => {
   next(action);
   if (action.type === REGISTER_ACCOUNT) {
-    dispatch(apiRequest('POST', `${URL}/register`, action.payload, REGISTER_SUCCESS, REGISTER_ERROR));
+    dispatch(apiRequest('POST', `${URL}/register`, action.withAuth, action.payload, REGISTER_SUCCESS, REGISTER_ERROR));
     dispatch(showSpinner());
   }
 };
