@@ -8,3 +8,4 @@ config/config.json
 *.pub
 account-service.db
 *.lock.json
+.env

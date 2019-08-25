@@ -12,8 +12,7 @@ const ServerResponse = require('fwsp-server-response');
 const responses = require('../utils/responses');
 const errors = require('../utils/errors');
 const Database = require('../sequelizer/Database').db;
-const bcrypt = require('bcrypt');
-const uuid = require('uuid/v4');
+const crypto = require('crypto');
 
 let serverResponse = new ServerResponse();
 express.response.sendError = function(err) {
@@ -51,11 +50,14 @@ api.post('/register', async (req, res, next) => {
   }
 
   const { account } = responses;
+  const hashedPassword = await crypto.createHmac('sha256', process.env.HASH_SECRET)
+    .update(password)
+    .digest('hex');
   const transaction = await Database.sequelize.transaction();
   try {
     await Database.accounts.create({
       email,
-      password: await bcrypt.hash(password, 10),
+      password: hashedPassword,
       isActive: true,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -91,31 +93,64 @@ api.post('/login', async (req, res, next) => {
     return res.status(account.notExist.statusCode)
       .send(account.notExist);
   }
-  const passwordMatched = await bcrypt.compare(password, userAccount.password);
-  if (!passwordMatched) {
+  const hashedPassword = await crypto.createHmac('sha256', process.env.HASH_SECRET)
+    .update(password)
+    .digest('hex');
+  if (hashedPassword !== userAccount.password) {
     const { account } = errors;
     return res.status(account.notExist.statusCode)
       .send(account.notExist);
   }
 
-  const fingerPrint = await uuid();
+  const nonce = crypto.randomBytes(12);
+  const fingerPrint = crypto.randomBytes(Math.ceil(128/2)).toString('hex').slice(0, 128);
+  const cipher = crypto.createCipher('aes-256-cbc', process.env.FP_HASH_SECRET, nonce);
+  const hashedFingerPrint = cipher.update(fingerPrint, 'utf8', 'hex') + cipher.final('hex');
+
+  // TODO: add when validating fingerprint from cookie & token
+  // const decipher = crypto.createDecipher('aes-256-cbc', process.env.FP_HASH_SECRET, nonce);
+  // const fp = decipher.update(hashedFingerPrint, 'hex', 'utf8') + decipher.final('utf8');
+
   const token = await jwtAuth.createToken({
     userId: userAccount.id,
     isAdmin: userAccount.isAdmin,
-    fingerPrint,
+    hashedFingerPrint,
   });
 
   delete userAccount.password;
   return res.status(200)
-    .cookie('idle-session', fingerPrint, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV.includes('production'),
-      path: '/',
-      domain: process.env.NODE_ENV.includes('production')
-        ? process.env.HOST
-        : 'localhost',
-    })
+    .cookie(
+      process.env.NODE_ENV.includes('production')
+        ? '__Secure-idle-session'
+        : 'idle-session'
+      , fingerPrint,
+      {
+        httpOnly: true,
+        sameSite: true,
+        secure: process.env.NODE_ENV.includes('production'),
+        path: '/',
+        domain: process.env.NODE_ENV.includes('production')
+          ? process.env.HOST
+          : 'localhost',
+      }
+    )
+    .cookie(
+      process.env.NODE_ENV.includes('production')
+        ? '__Secure-session-nonce'
+        : 'session-nonce'
+      , nonce,
+      {
+        httpOnly: true,
+        sameSite: true,
+        secure: process.env.NODE_ENV.includes('production'),
+        path: '/',
+        domain: process.env.NODE_ENV.includes('production')
+          ? process.env.HOST
+          : 'localhost',
+      }
+    )
     .cookie('token', token, {
+      sameSite: true,
       secure: process.env.NODE_ENV.includes('production'),
       path: '/',
       domain: process.env.NODE_ENV.includes('production')

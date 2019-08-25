@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import { Switch, Route } from 'react-router';
+import { Switch, Route, Redi } from 'react-router';
 
 // Redux
 import { store } from './redux/store';
@@ -20,13 +20,29 @@ ReactDOM.render((
         <Switch>
           {
             routes.map(
-              ({ path, component}) => (
-                <Route
-                  key={path}
-                  path={path}
-                  component={component}
-                />
-              )
+              ({ path, component, needAuth, isAuthorized }) => {
+                if (needAuth) {
+                  return isAuthorized()
+                    ? (
+                      <Route
+                        key={path}
+                        path={path}
+                        component={component}
+                        isAuthorized={isAuthorized()}
+                      />
+                    )
+                    : <Redirect to="/" />
+                }
+
+                return (
+                  <Route
+                    key={path}
+                    path={path}
+                    component={component}
+                    isAuthorized={isAuthorized()}
+                  />
+                );
+              }
             )
           }
         </Switch>
