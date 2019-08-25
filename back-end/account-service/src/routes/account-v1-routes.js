@@ -109,19 +109,19 @@ api.post('/login', async (req, res, next) => {
   return res.status(200)
     .cookie('idle-session', fingerPrint, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV.includes('production'),
       path: '/',
       domain: process.env.NODE_ENV.includes('production')
         ? process.env.HOST
         : 'localhost',
     })
-    .cookie('userId', userAccount.id, {
-      secure: true,
+    .cookie('token', token, {
+      secure: process.env.NODE_ENV.includes('production'),
       path: '/',
       domain: process.env.NODE_ENV.includes('production')
         ? process.env.HOST
         : 'localhost',
     })
-    .send({ status: 'OK', message: 'Logged In', account: userAccount, token });
+    .send({ status: 'OK', message: 'Logged In', account: userAccount });
 });
 module.exports = api;
