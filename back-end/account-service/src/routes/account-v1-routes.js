@@ -85,7 +85,7 @@ api.post('/login', async (req, res, next) => {
       .send(account.invalidEmail);
   }
 
-  const userAccount = await Database.accounts.findOne({ where: { email }});
+  let userAccount = await Database.accounts.findOne({ raw: true, where: { email }});
   if (!userAccount) {
     const { account } = errors;
     return res.status(account.notExist.statusCode)
