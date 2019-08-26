@@ -32,6 +32,14 @@ module.exports = {
           notEmpty: true,
         },
       },
+      isLoggedIn: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+        validate: {
+          notEmpty: true,
+        },
+      },
       isAdmin: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
@@ -39,6 +47,10 @@ module.exports = {
         validate: {
           notEmpty: true,
         },
+      },
+      lastLoggedIn: {
+        type: Sequelize.DATE,
+        allowNull: true,
       },
       createdAt: {
         type: Sequelize.DATE,

@@ -11,6 +11,7 @@ module.exports = {
         .update('test')
         .digest('hex'),
       isActive: true,
+      isLoggedIn: false,
       isAdmin: true,
       createdAt: new Date(),
       updatedAt: new Date(),

@@ -111,6 +111,8 @@ api.post('/login', async (req, res, next) => {
   // const decipher = crypto.createDecipher('aes-256-cbc', process.env.FP_HASH_SECRET, nonce);
   // const fp = decipher.update(hashedFingerPrint, 'hex', 'utf8') + decipher.final('utf8');
 
+  // TODO: add update user isLoggedIn state to true
+
   const token = await jwtAuth.createToken({
     userId: userAccount.id,
     isAdmin: userAccount.isAdmin,
