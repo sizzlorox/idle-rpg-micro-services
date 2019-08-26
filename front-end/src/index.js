@@ -20,15 +20,14 @@ ReactDOM.render((
         <Switch>
           {
             routes.map(
-              ({ path, component, needAuth, isAuthorized }) => {
+              ({ path, Component, needAuth, isAuthorized }) => {
                 if (needAuth) {
                   return isAuthorized()
                     ? (
                       <Route
                         key={path}
                         path={path}
-                        component={component}
-                        isAuthorized={isAuthorized()}
+                        render={() => <Component />}
                       />
                     )
                     : <Redirect to="/" />
@@ -38,8 +37,7 @@ ReactDOM.render((
                   <Route
                     key={path}
                     path={path}
-                    component={component}
-                    isAuthorized={isAuthorized()}
+                    render={() => <Component />}
                   />
                 );
               }
