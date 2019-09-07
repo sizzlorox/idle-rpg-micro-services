@@ -125,7 +125,9 @@ export const LoginRegisterCard = ({ children }) => {
                   render="onload"
                   verifyCallback={() => console.log("verified")}
                 />
-                <Button onClick={() => dispatch(registerAccount({ email, password, confirmPassword }))}>
+                <Button
+                  onClick={() => dispatch(registerAccount({ email, password, confirmPassword }))}
+                >
                   Register
                 </Button>
               </React.Fragment>

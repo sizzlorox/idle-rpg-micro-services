@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import styled from '@emotion/styled';
 import { Spinner } from '@blueprintjs/core';
+import { useSelector } from 'react-redux';
 
 // Containers
 import NavBar from '../containers/NavBar';
@@ -17,6 +18,7 @@ const StyledSpinnerContainer = styled.div`
 `;
 
 const Home = () => {
+  const { isAuthorized } = useSelector(state => state.account);
 
   return (
     <React.Fragment>
@@ -27,7 +29,7 @@ const Home = () => {
             <Spinner />
           </StyledSpinnerContainer>
         )}>
-          <LoginRegisterCard />
+          {!isAuthorized && <LoginRegisterCard />}
         </Suspense>
       </Background>
     </React.Fragment>

@@ -4,5 +4,5 @@ import { uiReducer } from './uiReducer';
 
 export const reducers = combineReducers({
   ui: uiReducer,
-  accouunt: accountReducer,
+  account: accountReducer,
 });

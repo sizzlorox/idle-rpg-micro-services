@@ -1,11 +1,11 @@
 import Home from './views/Home';
-import isAuthorized from './core/auth';
+import auth from './core/auth';
 
 export default [
   {
     path: '/',
-    component: Home,
+    Component: Home,
     needAuth: false,
-    isAuthorized: () => isAuthorized(),
+    isAuthorized: () => auth.isAuthorized(),
   }
 ];

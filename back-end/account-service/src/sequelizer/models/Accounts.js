@@ -29,6 +29,14 @@ module.exports = function(sequelize, DataTypes) {
         notEmpty: true,
       },
     },
+    isLoggedIn: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
     isAdmin: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
@@ -36,6 +44,10 @@ module.exports = function(sequelize, DataTypes) {
       validate: {
         notEmpty: true,
       },
+    },
+    lastLoggedIn: {
+      type: DataTypes.DATE,
+      allowNull: true,
     },
   }, {
     indexes: [{
