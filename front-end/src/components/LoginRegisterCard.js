@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Classes,
   Card,
@@ -13,6 +13,7 @@ import Recaptcha from "react-recaptcha";
 import styled from "@emotion/styled";
 
 // Redux
+import { setHomeCardTab } from '../redux/actions/uiAction';
 import { loginAccount, registerAccount } from '../redux/actions/accountAction';
 
 const CardContainer = styled.div`
@@ -29,8 +30,8 @@ const StyledCard = styled(Card)`
 `;
 
 export const LoginRegisterCard = ({ children }) => {
+  const { homeCardTab } = useSelector(({ ui }) => ui);
   const dispatch = useDispatch();
-  const [mode, setMode] = useState("login");
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -40,8 +41,8 @@ export const LoginRegisterCard = ({ children }) => {
       <StyledCard className={Classes.DARK}>
         <Tabs
           id="loginRegisterTabs"
-          onChange={newTabId => setMode(newTabId)}
-          selectedTabId={mode}
+          onChange={newTabId => dispatch(setHomeCardTab(newTabId))}
+          selectedTabId={homeCardTab}
           renderActiveTabPanelOnly
         >
           <Tab

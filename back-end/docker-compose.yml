@@ -28,6 +28,7 @@ services:
       - 5001-5020:5000
     volumes:
       - ./account-service/config:/usr/src/app/config
+      - ./account-service/account-service.db:/usr/src/app/account-service.db
     networks:
       - hydra-net
 

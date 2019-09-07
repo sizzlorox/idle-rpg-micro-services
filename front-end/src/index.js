@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import { Switch, Route, Redi } from 'react-router';
+import { Switch, Route } from 'react-router';
+import history from './commons/history';
 
 // Redux
 import { store } from './redux/store';
@@ -16,7 +17,7 @@ import routes from './routes';
 ReactDOM.render((
   <ErrorBoundary>
     <Provider store={store}>
-      <BrowserRouter>
+      <BrowserRouter history={history}>
         <Switch>
           {
             routes.map(

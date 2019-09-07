@@ -31,6 +31,7 @@ api.post('/register', async (req, res, next) => {
     return res.status(defaultType.badRequest.statusCode)
       .send(defaultType.badRequest);
   }
+  // TODO: move regex somewhere else
   if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)) {
     const { account } = errors;
     return res.status(account.invalidEmail.statusCode)

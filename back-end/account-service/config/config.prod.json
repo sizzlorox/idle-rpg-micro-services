@@ -1,0 +1,29 @@
+{
+  "environment": "production",
+  "jwtPrivateCert": "./config/service.pem",
+  "jwtPublicCert": "./config/service.pub",
+  "cors": {
+    "origin": [
+      "http://localhost:8000",
+      "http://localhost:7000"
+    ],
+    "credentials": true
+  },
+  "hydra": {
+    "serviceName": "account-service",
+    "serviceIP": "",
+    "servicePort": 0,
+    "serviceType": "account",
+    "serviceDescription": "Manages Accounts",
+    "plugins": {
+      "logger": {
+        "logRequests": true
+      }
+    },
+    "redis": {
+      "url": "redis",
+      "port": 6379,
+      "db": 15
+    }
+  }
+}
