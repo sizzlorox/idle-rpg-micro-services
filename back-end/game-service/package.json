@@ -16,7 +16,7 @@
     "node": ">=6.2.1"
   },
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "fwsp-config": "1.1.5",
     "fwsp-jsutils": "1.0.10",
     "fwsp-jwt-auth": "0.1.0",
